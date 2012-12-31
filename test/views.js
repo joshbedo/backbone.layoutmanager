@@ -720,7 +720,7 @@ asyncTest("Views getting appended in the wrong order", 3, function() {
     }
   });
 
-  view.render().view.on("afterRender", function() {
+  view.render().on("afterRender", function() {
     equal(this.views[""].length, 2, "There should be two views");
     equal(this.views[""][0].options.order, 1, "The first order should be 1");
     equal(this.views[""][1].options.order, 2, "The second order should be 2");
@@ -1058,7 +1058,7 @@ test("remove method not working as expected", function() {
 // https://github.com/tbranyen/backbone.layoutmanager/issues/156
 test("Shouldn't calling $('#app').html(new BackboneLayout().render().el) work?", function() {
 
-  ok(testUtil.isDomNode(new Backbone.Layout().render().view.el), "Is an element?");
+  ok(testUtil.isDomNode(new Backbone.Layout().render().el), "Is an element?");
 
 });
 
@@ -1606,7 +1606,7 @@ test("Lost triggered events in cached sub-view", 2, function() {
     }
   });
 
-  new MainView().render().view.render();
+  new MainView().render().render();
 });
 
 // https://github.com/tbranyen/backbone.layoutmanager/issues/243

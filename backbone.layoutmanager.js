@@ -372,13 +372,12 @@ var LayoutManager = Backbone.View.extend({
       actuallyRender(root, def);
     }
 
-    // Add the View to the deferred so that `view.render().view.el` is
-    // possible.
-    def.view = root;
+    // Mix in the deferred properties to the View.
+    _.extend(root, def);
     
     // This is the promise that determines if the `render` function has
     // completed or not.
-    return def;
+    return root;
   },
 
   // Ensure the cleanup function is called whenever remove is called.
