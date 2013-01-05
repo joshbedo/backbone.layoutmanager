@@ -167,9 +167,9 @@ test("override render", 1, function() {
     }
   });
 
-  layout.render().then(function() {
+  layout.once("afterRender", function() {
     ok(hit, "The render method was hit correctly");
-  });
+  }).render();
 });
 
 test("Fetch works on a View during definition", 1, function() {
@@ -184,7 +184,7 @@ test("Fetch works on a View during definition", 1, function() {
     }
   });
   
-  new View().render().then(function() {
+  new View().render().once("afterRender", function() {
     ok(hit, "Fetch gets called on a View.");
   });
 });
@@ -199,7 +199,7 @@ test("Fetch works on a View during invocation", 1, function() {
     fetch: function() {
       hit = true;
     }
-  }).render().then(function() {
+  }).render().once("afterRender", function() {
     ok(hit, "Fetch gets called on a View.");
   });
 });
@@ -245,7 +245,7 @@ test("Custom template function", 1, function() {
     serialize: "hi"
   });
 
-  new T().render().done(function() {
+  new T().render().once("afterRender", function() {
     equal(testUtil.trim(this.$el.text()), "hi", "Correct text");
   });
 });
@@ -277,7 +277,7 @@ test("If you use 'data' as a variable in a view it won't render", 1, function() 
     template: _.template("<%=name%>")
   });
 
-  new Test().render().done(function() {
+  new Test().render().once("afterRender", function() {
     equal(this.$el.html(), "test", "Correct proeprty set.");
   });
 });

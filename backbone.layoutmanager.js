@@ -335,19 +335,19 @@ var LayoutManager = Backbone.View.extend({
           if (insert && view.length) {
             // Only need to wait for the first View to complete, the rest
             // will be synchronous, by virtue of having the template cached.
-            return view[0].render().pipe(function() {
+            return view[0].render().__manager__.renderDeferred.pipe(function() {
               // Map over all the View's to be inserted and call render on
               // them all.  Once they have all resolved, resolve the other
               // deferred.
               return options.when(_.map(view.slice(1), function(insertView) {
-                return insertView.render();
+                return insertView.render().__manager__.renderDeferred;
               }));
             });
           }
 
           // Only return the fetch deferred, resolve the main deferred after
           // the element has been attached to it's parent.
-          return !insert ? view.render() : view;
+          return !insert ? view.render().__manager__.renderDeferred : view;
         });
 
         // Once all nested Views have been rendered, resolve this View's
@@ -372,8 +372,11 @@ var LayoutManager = Backbone.View.extend({
       actuallyRender(root, def);
     }
 
-    // Mix in the deferred properties to the View.
-    _.extend(root, def);
+    // Put the deferred inside of the `__manager__` object, since we don't want
+    // end users accessing this directly anymore in favor of the `afterRender`
+    // event.  So instead of doing `render().then(...` do
+    // `render().once("afterRender", ...`.
+    root.__manager__.renderDeferred = def;
     
     // This is the promise that determines if the `render` function has
     // completed or not.
