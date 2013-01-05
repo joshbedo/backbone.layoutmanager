@@ -184,9 +184,9 @@ test("Fetch works on a View during definition", 1, function() {
     }
   });
   
-  new View().render().once("afterRender", function() {
+  new View().once("afterRender", function() {
     ok(hit, "Fetch gets called on a View.");
-  });
+  }).render();
 });
 
 test("Fetch works on a View during invocation", 1, function() {
@@ -199,9 +199,9 @@ test("Fetch works on a View during invocation", 1, function() {
     fetch: function() {
       hit = true;
     }
-  }).render().once("afterRender", function() {
+  }).once("afterRender", function() {
     ok(hit, "Fetch gets called on a View.");
-  });
+  }).render();
 });
 
 test("Collection should exist on the View", 1, function() {
@@ -245,9 +245,9 @@ test("Custom template function", 1, function() {
     serialize: "hi"
   });
 
-  new T().render().once("afterRender", function() {
+  new T().once("afterRender", function() {
     equal(testUtil.trim(this.$el.text()), "hi", "Correct text");
-  });
+  }).render();
 });
 
 // https://github.com/tbranyen/backbone.layoutmanager/issues/201
@@ -277,9 +277,9 @@ test("If you use 'data' as a variable in a view it won't render", 1, function() 
     template: _.template("<%=name%>")
   });
 
-  new Test().render().once("afterRender", function() {
+  new Test().once("afterRender", function() {
     equal(this.$el.html(), "test", "Correct proeprty set.");
-  });
+  }).render();
 });
 
 // https://github.com/tbranyen/backbone.layoutmanager/issues/237

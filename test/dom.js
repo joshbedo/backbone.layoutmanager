@@ -24,12 +24,12 @@ asyncTest("use layout without a template property", function() {
     ".test": new this.SubView()
   });
 
-  main.render().then(function() {
+  main.once("afterRender", function() {
     equal(testUtil.trim( this.$(".test").text() ), "Right",
       "Able to use an existing DOM element");
 
     start();
-  });
+  }).render();
 });
 
 asyncTest("afterRender inside Document", function() {
@@ -125,12 +125,11 @@ test("events not correctly bound", 1, function() {
 
   view.$el.appendTo("#container");
 
-  view.render().then(function() {
+  view.once("afterRender", function() {
     view.views.p[0].$el.click();
 
     ok(hit, "Event was fired");
-  });
-
+  }).render();
 });
 
 // https://github.com/tbranyen/backbone.layoutmanager/issues/126
@@ -289,12 +288,12 @@ asyncTest("events are bound correctly", 1, function() {
 
   // Render twice.
   l.render();
-  l.render().then(function() {
+  l.once("afterRender", function() {
     l.$("p div").trigger("click");
 
     equal(hit, 2, "Event handler is bound and fired correctly");
     start();
-  });
+  }).render();
 });
 
 asyncTest("more events issues", 1, function() {
